@@ -20,26 +20,6 @@ import java.util.Set;
 public class IrisReader {
 	//This is where the data sets should be. Put it under the src folder.
 	private final String root = "src/ass1-data/part1/";
-	/**
-	 * Constructor for IrisReader with a given filename.
-	 * @param filename
-	 */
-	public IrisReader(String filename){
-		switch(filename){
-		case "iris-test.txt":
-			readTestset(filename);
-			break;
-		case "iris-training.txt":
-			readTrainingset(filename);
-			break;
-		case "iris.data":
-			readDataset(filename);
-			break;
-		default:
-			System.out.println("No such data file exists.");
-		}
-
-	}
 
 	/**
 	 * This reads iris-training.txt and returns a list of Iris objects with labels.
@@ -156,9 +136,5 @@ public class IrisReader {
 			System.err.format("IOException: %s%n", x);
 		}
 		return ranges;
-	}
-
-	public static void main(String[] args){
-		new IrisReader("iris.data");
 	}
 }
