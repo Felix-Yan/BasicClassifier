@@ -2,6 +2,9 @@ package imp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * This classifier classifies the test data set of iris into different labels according to the training data set.
@@ -16,12 +19,13 @@ public class NearestNeighbourClassifier {
 	/**
 	 * A constructor for NearestNeighbourClassifier. It reads in the training set, test set and the data range.
 	 */
-	public NearestNeighbourClassifier(){
+	public NearestNeighbourClassifier(String training, String test, int k){
 		IrisReader iris = new IrisReader();
 		double[][] r = iris.readDataset("iris.data");
-		trainingSet = iris.readTrainingset("iris-training.txt");
-		testSet = iris.readTestset("iris-test.txt");
+		trainingSet = iris.readTrainingset(training);
+		testSet = iris.readTestset(test);
 		calculateRange(r);
+		classify(k);
 	}
 
 	/**
@@ -49,26 +53,83 @@ public class NearestNeighbourClassifier {
 		return Math.sqrt(s1+s2+s3+s4);
 	}
 
-	public void classify(){
+	/**
+	 * This classifies all the instances in the test set according to the training set.
+	 * @param k
+	 */
+	public void classify(int k){
+		int error = 0;//count the number of wrong classifications
 		for(Iris i: testSet){
-			Iris nearestNeighbour = null;
-			double minDistance = Double.MAX_VALUE;
-			for(Iris j: trainingSet){
+			Iris[] nearestNeighbours = new Iris[k];
+			List <Double> distances = new ArrayList<Double>();
+			for(Iris j: trainingSet){//find all the distances
 				double distance = calculateDistance(i,j);
-				if(distance < minDistance){
-					minDistance = distance;
-					nearestNeighbour = j;
-				}
+				distances.add(distance);
 			}
-			i.setLabel(nearestNeighbour.getLabel());
+			for(int index = 0; index<k; index++){//find the k nearest neighbour
+				double min = Collections.min(distances);
+				int minIndex = distances.indexOf(min);
+				Iris neighbour = trainingSet.get(minIndex);//the nearest neighbour
+				nearestNeighbours[index] = neighbour;
+				//set the smallest value to maximum double to remove it without influencing the order
+				distances.set(minIndex, Double.MAX_VALUE);
+			}
+			String classification = findMajority(nearestNeighbours);
+			if(!i.getLabel().equals(classification)){
+				System.out.println("==========="+error);
+				System.out.println(i.getLabel());
+				System.out.println(classification);
+				error++;
+			}
+			i.setLabel(classification);
 		}
+		double accuracy = 1 - error*1.0/testSet.size();
+		System.out.printf("The accuracy is %.2f %n",accuracy);
 	}
+
+	/**
+	 * This finds out the majority label in the nearest neighbours.
+	 * If no majority is found, select the label based on the alphabetical order.
+	 * @param neighbours
+	 * @return
+	 */
+	public String findMajority(Iris[] neighbours){
+		List<String> labels = new ArrayList<String>();
+		for(int i=0; i<neighbours.length; i++){
+			labels.add(neighbours[i].getLabel());
+		}
+		Collections.sort(labels);
+		String previous = null;
+		String majority = null;
+		int num = 0;
+		int max = 0;
+		for (String str:labels) {
+			if (str.equals(previous)) {
+				num++;
+			} else {
+				if (num>max) {
+					max = num;
+					majority = str;
+				}
+				num = 1;
+				previous = str;
+			}
+		}
+		if(majority == null){
+			majority = previous;
+		}
+		return majority;
+	}
+
+	public double calculateAccuracy(){
+		return 0;
+	}
+
 	/**
 	 * The main method to find out the nearest neighbours
 	 * @param args
 	 */
 	public static void main(String[] args){
-
-
+		new NearestNeighbourClassifier(args[0], args[1], Integer.parseInt(args[2]));
 	}
 }

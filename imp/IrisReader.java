@@ -35,7 +35,7 @@ public class IrisReader {
 			String line = null;
 			while((line = reader.readLine()) != null){
 				if(line.equals("")) break;//Finish after the last line
-				String[] words = line.split(" ");
+				String[] words = line.split("  ");
 				double sepalLength = Double.parseDouble(words[0]);
 				double sepalWidth = Double.parseDouble(words[1]);
 				double petalLength = Double.parseDouble(words[2]);
@@ -64,12 +64,12 @@ public class IrisReader {
 			String line = null;
 			while((line = reader.readLine()) != null){
 				if(line.equals("")) break;//Finish after the last line
-				String[] words = line.split(" ");
+				String[] words = line.split("  ");
 				double sepalLength = Double.parseDouble(words[0]);
 				double sepalWidth = Double.parseDouble(words[1]);
 				double petalLength = Double.parseDouble(words[2]);
 				double petalWidth = Double.parseDouble(words[3]);
-				Iris i = new Iris(sepalLength,sepalWidth,petalLength,petalWidth);
+				Iris i = new Iris(sepalLength,sepalWidth,petalLength,petalWidth, words[4]);
 				irisList.add(i);
 			}
 
