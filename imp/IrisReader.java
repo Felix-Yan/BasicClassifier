@@ -54,19 +54,20 @@ public class IrisReader {
 		try(BufferedReader reader = Files.newBufferedReader(path)){
 			String line = null;
 			while((line = reader.readLine()) != null){
-				System.out.println(line);
-				/*String[] words = line.split(" ");
-				if(words.length > 2){
-					if(words[1].equals("Front")){
-						break;
-					}
-				}*/
+				if(line.equals("")) break;//Finish after the last line
+				String[] words = line.split(" ");
+				double sepalLength = Double.parseDouble(words[0]);
+				double sepalWidth = Double.parseDouble(words[1]);
+				double petalLength = Double.parseDouble(words[2]);
+				double petalWidth = Double.parseDouble(words[3]);
+				Iris i = new Iris(sepalLength,sepalWidth,petalLength,petalWidth,words[4]);
+				irisList.add(i);
 			}
 
 		} catch (IOException x){
 			System.err.format("IOException: %s%n", x);
 		}
-		return null;
+		return irisList;
 	}
 
 	/**
@@ -75,7 +76,27 @@ public class IrisReader {
 	 * @return
 	 */
 	public List<Iris> readTestset(String filename){
-		return null;
+		List<Iris> irisList = new ArrayList<Iris>();
+		String directory = root+filename;
+		//BufferedReader r = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(directory)));
+		Path path = Paths.get(directory);
+		try(BufferedReader reader = Files.newBufferedReader(path)){
+			String line = null;
+			while((line = reader.readLine()) != null){
+				if(line.equals("")) break;//Finish after the last line
+				String[] words = line.split(" ");
+				double sepalLength = Double.parseDouble(words[0]);
+				double sepalWidth = Double.parseDouble(words[1]);
+				double petalLength = Double.parseDouble(words[2]);
+				double petalWidth = Double.parseDouble(words[3]);
+				Iris i = new Iris(sepalLength,sepalWidth,petalLength,petalWidth);
+				irisList.add(i);
+			}
+
+		} catch (IOException x){
+			System.err.format("IOException: %s%n", x);
+		}
+		return irisList;
 	}
 
 	/**
@@ -133,12 +154,6 @@ public class IrisReader {
 
 		} catch (IOException x){
 			System.err.format("IOException: %s%n", x);
-		}
-		//debug
-		for(int i=0;i<ranges.length;i++){
-			for(int j=0; j<ranges[0].length;j++){
-				System.out.println(ranges[i][j]);
-			}
 		}
 		return ranges;
 	}
