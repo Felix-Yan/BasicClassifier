@@ -19,7 +19,7 @@ import java.util.Set;
  */
 public class IrisReader {
 	//This is where the data sets should be. Put it under the src folder.
-	private final String root = "src/ass1-data/part1/";
+	private final String root = "ass1-data/part1/";
 
 	/**
 	 * This reads iris-training.txt and returns a list of Iris objects with labels.
