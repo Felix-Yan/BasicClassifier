@@ -21,7 +21,7 @@ public class NearestNeighbourClassifier {
 	 */
 	public NearestNeighbourClassifier(String training, String test, int k){
 		IrisReader iris = new IrisReader();
-		double[][] r = iris.readDataset("iris.data");
+		double[][] r = iris.extractRanges(training);
 		trainingSet = iris.readTrainingset(training);
 		testSet = iris.readTestset(test);
 		calculateRange(r);
@@ -77,8 +77,8 @@ public class NearestNeighbourClassifier {
 			String classification = findMajority(nearestNeighbours);
 			if(!i.getLabel().equals(classification)){
 				System.out.println("==========="+error);
-				System.out.println(i.getLabel());
-				System.out.println(classification);
+				System.out.println("Should be: "+i.getLabel());
+				System.out.println("Actual result: "+classification);
 				error++;
 			}
 			i.setLabel(classification);
@@ -107,17 +107,17 @@ public class NearestNeighbourClassifier {
 			if (str.equals(previous)) {
 				num++;
 			} else {
-				if (num>max) {
-					max = num;
-					majority = str;
-				}
 				num = 1;
 				previous = str;
 			}
+			if (num>max) {
+				max = num;
+				majority = previous;
+			}
 		}
-		if(majority == null){
+		/*if(majority == null){
 			majority = previous;
-		}
+		}*/
 		return majority;
 	}
 

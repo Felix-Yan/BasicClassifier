@@ -84,7 +84,7 @@ public class IrisReader {
 	 * @param filename
 	 * @return
 	 */
-	public double[][] readDataset(String filename){
+	public double[][] extractRanges(String filename){
 		double[][] ranges = new double[4][2];
 		String directory = root+filename;
 		Path path = Paths.get(directory);
@@ -93,7 +93,8 @@ public class IrisReader {
 			String line = null;
 			while((line = reader.readLine()) != null){
 				if(line.equals("")) break;//Finish after the last line
-				String[] words = line.split(",");
+				//String[] words = line.split(",");
+				String[] words = line.split("  ");
 				double sepalLength = Double.parseDouble(words[0]);
 				double sepalWidth = Double.parseDouble(words[1]);
 				double petalLength = Double.parseDouble(words[2]);
