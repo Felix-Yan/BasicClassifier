@@ -59,6 +59,7 @@ public class NearestNeighbourClassifier {
 	 */
 	public void classify(int k){
 		int error = 0;//count the number of wrong classifications
+		int count = 0;//count of instances
 		for(Iris i: testSet){
 			Iris[] nearestNeighbours = new Iris[k];
 			List <Double> distances = new ArrayList<Double>();
@@ -75,11 +76,10 @@ public class NearestNeighbourClassifier {
 				distances.set(minIndex, Double.MAX_VALUE);
 			}
 			String classification = findMajority(nearestNeighbours);
-			System.out.println("Labeled as: "+classification);
+			System.out.println("Instance "+(++count)+" is Labeled as: "+classification);
 			if(!i.getLabel().equals(classification)){
-				System.out.println("==========="+error);
+				System.out.println("======error======="+error);
 				System.out.println("Should be: "+i.getLabel());
-				System.out.println("Actual result: "+classification);
 				error++;
 			}
 			i.setLabel(classification);
