@@ -75,6 +75,7 @@ public class NearestNeighbourClassifier {
 				distances.set(minIndex, Double.MAX_VALUE);
 			}
 			String classification = findMajority(nearestNeighbours);
+			System.out.println("Labeled as: "+classification);
 			if(!i.getLabel().equals(classification)){
 				System.out.println("==========="+error);
 				System.out.println("Should be: "+i.getLabel());
