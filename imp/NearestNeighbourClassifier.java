@@ -17,7 +17,9 @@ public class NearestNeighbourClassifier {
 	double[] ranges = new double[4];
 
 	/**
-	 * A constructor for NearestNeighbourClassifier. It reads in the training set, test set and the data range.
+	 * A constructor for NearestNeighbourClassifier. It reads in the training set, 
+	 * test set and the data range.
+	 * @param k - number of nearest neighbours
 	 */
 	public NearestNeighbourClassifier(String training, String test, int k){
 		IrisReader iris = new IrisReader();
